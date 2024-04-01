@@ -1,4 +1,5 @@
 import Joi from 'joi'
+import { GenderType } from '../util/dataTypes'
 
 export interface CustomerInterface{
     name: string,
@@ -7,12 +8,6 @@ export interface CustomerInterface{
     postalCode: number
     birth: Date
     gender : string
-}
-
-enum GenderType {
-    Male = "male",
-    Female = "female",
-    Other = "other",
 }
 
 export const commentSchema = Joi.object({
