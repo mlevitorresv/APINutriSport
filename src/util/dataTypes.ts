@@ -18,3 +18,8 @@ export enum ProductTypes {
     IntraWorkouts = "intraWorkouts",
     Other = "other",
 }
+
+export enum PayTypes {
+    CreditCard = "creditCard",
+    Cash = "cash"
+}
