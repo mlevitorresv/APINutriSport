@@ -7,6 +7,7 @@ export interface EmployeeInterface{
     gender : string
     DNI: string
     email: string
+    password: string
     phone: string
     postalCode: number
     address: string
@@ -25,6 +26,7 @@ export const employeeSchema = Joi.object({
     gender: Joi.string().valid(...Object.values(GenderType)).required(),
     DNI: Joi.string().min(9).max(12).required(),
     email: Joi.string().required(),
+    password: Joi.string().min(9).required(),
     phone: Joi.string().required(),
     postalCode: Joi.number().min(5).max(5).required(),
     address: Joi.string().required(),
