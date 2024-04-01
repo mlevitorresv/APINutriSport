@@ -9,3 +9,12 @@ export enum ContractTypes {
     UndefinedTime = "undefinedTime",
     CertainTime = "certainTime"
 }
+
+export enum ProductTypes {
+    Accessories = "accessories",
+    PreWorkouts = "preWorkouts",
+    Protein = "protein",
+    Creatine = "creatine",
+    IntraWorkouts = "intraWorkouts",
+    Other = "other",
+}
