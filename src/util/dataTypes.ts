@@ -23,3 +23,8 @@ export enum PayTypes {
     CreditCard = "creditCard",
     Cash = "cash"
 }
+
+export enum CategoriesSuppliersTypes {
+    Products = "products",
+    Rent = "rent"
+}
