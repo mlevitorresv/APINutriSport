@@ -13,7 +13,7 @@ export const fetchAllSales = async (): Promise<any> => {
 
 export const fetchSalesById = async (id: string): Promise<any> => {
     try{
-        const [result, fields] = await executeQuery(`SELECT * FROM saless WHERE id = ${id}`)
+        const [result, fields] = await executeQuery(`SELECT * FROM sales WHERE id = ${id}`)
         return result;
     }catch(error){
         console.error('Error, sale were not obtained: ', error)
@@ -25,8 +25,8 @@ export const fetchSalesById = async (id: string): Promise<any> => {
 export const postSale = async(sale: SaleInterface) => {
     try {
         const query = `
-        INSERT INTO sales (customer, date, employee, invoiceNumber, payMethod, products)
-        VALUES ('${sale.customer}', '${sale.date}', '${sale.employee}', '${sale.invoiceNumber}', '${sale.payMethod}', '${sale.products}')
+        INSERT INTO sales (customer_id, date, employee_id, invoiceNumber, payMethod)
+        VALUES ('${sale.customer}', '${sale.date}', '${sale.employee}', '${sale.invoiceNumber}', '${sale.payMethod}')
         `
 
         const [result, fields] = await executeQuery(query)

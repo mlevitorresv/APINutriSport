@@ -13,7 +13,7 @@ export const fetchAllProducts = async (): Promise<any> => {
 
 export const fetchProductsById = async (id: string): Promise<any> => {
     try{
-        const [result, fields] = await executeQuery(`SELECT * FROM productss WHERE id = ${id}`)
+        const [result, fields] = await executeQuery(`SELECT * FROM products WHERE id = ${id}`)
         return result;
     }catch(error){
         console.error('Error, product were not obtained: ', error)

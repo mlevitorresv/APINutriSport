@@ -13,7 +13,7 @@ export const fetchAllEmployees = async (): Promise<any> => {
 
 export const fetchEmployeesById = async (id: string): Promise<any> => {
     try{
-        const [result, fields] = await executeQuery(`SELECT * FROM employeess WHERE id = ${id}`)
+        const [result, fields] = await executeQuery(`SELECT * FROM employees WHERE id = ${id}`)
         return result;
     }catch(error){
         console.error('Error, employee were not obtained: ', error)

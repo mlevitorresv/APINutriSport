@@ -13,7 +13,7 @@ export const fetchAllBills = async (): Promise<any> => {
 
 export const fetchBillsById = async (id: string): Promise<any> => {
     try{
-        const [result, fields] = await executeQuery(`SELECT * FROM billss WHERE id = ${id}`)
+        const [result, fields] = await executeQuery(`SELECT * FROM bills WHERE id = ${id}`)
         return result;
     }catch(error){
         console.error('Error, bill were not obtained: ', error)

@@ -13,7 +13,7 @@ export const fetchAllSuppliers = async (): Promise<any> => {
 
 export const fetchSuppliersById = async (id: string): Promise<any> => {
     try{
-        const [result, fields] = await executeQuery(`SELECT * FROM supplierss WHERE id = ${id}`)
+        const [result, fields] = await executeQuery(`SELECT * FROM suppliers WHERE id = ${id}`)
         return result;
     }catch(error){
         console.error('Error, supplier were not obtained: ', error)
