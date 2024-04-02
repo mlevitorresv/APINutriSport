@@ -9,6 +9,7 @@ import { employeeRouter } from './controllers/employee'
 import { productRouter } from './controllers/product'
 import { saleRouter } from './controllers/sale'
 import { supplierRouter } from './controllers/supplier'
+import { publicRouter } from './public/public'
 
 
 export const app = express()
@@ -18,7 +19,7 @@ mysqlConnect();
 app.use(express.json())
 
 app.use('/login', loginRouter)
-// app.use('/public', publicRouter)
+app.use('/public', publicRouter)
 
 app.use(authMiddleware);
 
