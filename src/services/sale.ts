@@ -25,7 +25,7 @@ export const fetchSalesById = async (id: string): Promise<any> => {
 export const postSale = async(sale: SaleInterface) => {
     try {
         const query = `
-        INSERT INTO sales (beneficiary, description, type, paymentAmount, date)
+        INSERT INTO sales (customer, date, employee, invoiceNumber, payMethod, products)
         VALUES ('${sale.customer}', '${sale.date}', '${sale.employee}', '${sale.invoiceNumber}', '${sale.payMethod}', '${sale.products}')
         `
 
