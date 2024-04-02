@@ -25,7 +25,7 @@ export const fetchBillsById = async (id: string): Promise<any> => {
 export const postBill = async(bill: BillsInterface) => {
     try {
         const query = `
-        INSERT INTO bookings (beneficiary, description, type, paymentAmount, date)
+        INSERT INTO bills (beneficiary, description, type, paymentAmount, date)
         VALUES ('${bill.beneficiary}', '${bill.description}', '${bill.type}', '${bill.paymentAmount}', '${bill.date}')
         `
 
