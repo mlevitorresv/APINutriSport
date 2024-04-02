@@ -1,71 +1,63 @@
-import { mysqlConnect, executeQuery } from "../config/db";
-import { BillsInterface } from "../models/Bill";
+import express, { Request, Response } from 'express'
+import { BillsInterface } from '../models/Bill';
+import { deleteBill, fetchAllBills, fetchBillsById, patchBill, postBill } from '../services/bill';
 
-export const fetchAllBills = async (): Promise<any> => {
+
+export const billRouter = express.Router();
+
+billRouter.get('/', async (req: Request, res: Response) => {
     try {
-        const [result, fields] = await executeQuery(`SELECT * FROM bills`)
-        return result;
+        const allBills: BillsInterface[] = await fetchAllBills();
+        res.json({ bills: allBills })
     } catch (error) {
-        console.error('Error, bills were not obtained: ', error)
-        throw error;
+        console.error('Error getting the bills: ', error)
+        res.status(500).json({ error: 'Internal server error' })
     }
-}
-
-export const fetchBillsById = async (id: string): Promise<any> => {
-    try{
-        const [result, fields] = await executeQuery(`SELECT * FROM billss WHERE id = ${id}`)
-        return result;
-    }catch(error){
-        console.error('Error, bill were not obtained: ', error)
-        throw error;
-    }
-}
+})
 
 
-export const postBill = async(bill: BillsInterface) => {
+billRouter.get('/:id', async (req: Request, res: Response) => {
     try {
-        const query = `
-        INSERT INTO bookings (beneficiary, description, type, paymentAmount, date)
-        VALUES ('${bill.beneficiary}', '${bill.description}', '${bill.type}', '${bill.paymentAmount}', '${bill.date}')
-        `
-
-        const [result, fields] = await executeQuery(query)
-        return { success: true, bill: bill }
+        const id = req.params.id;
+        const bill: BillsInterface = await fetchBillsById(id);
+        res.json({ bills: bill })
     } catch (error) {
-        console.error('Error, bill not saved: ', error)
-        throw error;
+        console.error('Error getting the bill: ', error)
+        res.status(500).json({ error: 'Internal server error' })
     }
-}
+})
 
 
-export const patchBill = async (id: string, body: BillsInterface) => {
+billRouter.post('/', async (req: Request, res: Response) => {
     try {
-        const updateFields = {...body};
-        const keys = Object.keys(updateFields)
-        const values = Object.values(updateFields)
-        
-        const setClause = keys.map(key => `${key} = ?`).join(', ')
-
-        const query = `UPDATE bills SET ${setClause} WHERE id = ?;`;
-
-        const updateValues = [...values, id];
-
-        executeQuery(query, updateValues)
-        return { success: true, user: body }
-
+        const result = await postBill(req.body);
+        res.json(result)
     } catch (error) {
-        console.error('Error, bill not updated: ', error)
-        throw error;
+        console.error('Error saving the bill: ', error)
+        res.status(500).json({ error: 'Internal server error' })
     }
-}
+})
 
 
-export const deleteBill = async (id: string) => {
+billRouter.patch('/:id', async (req: Request, res: Response) => {
     try {
-        const [result, fields] = await executeQuery(`DELETE FROM bills WHERE id = ${id}`)
-        return result;
+        const id = req.params.id;
+        const result = await patchBill(id, req.body);
+        res.json(result)
     } catch (error) {
-        console.error('Error, bill not deleted: ', error)
-        throw error;
+        console.error('Error updating the bill: ', error)
+        res.status(500).json({ error: 'Internal server error' })
     }
-}
+})
+
+
+billRouter.delete('/:id', async (req: Request, res: Response) => {
+    try {
+        const id: string = req.params.id;
+        const result = await deleteBill(id);
+        res.json(result)
+    } catch (error) {
+        console.error('Error deleting the bill: ', error)
+        res.status(500).json({ error: 'Internal server error' })
+    }
+})
