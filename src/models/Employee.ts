@@ -2,7 +2,8 @@ import Joi from 'joi'
 import { ContractTypes, GenderType } from '../util/dataTypes'
 
 export interface EmployeeInterface{
-    name: string,
+    name: string
+    photo: string
     birth: Date
     gender : string
     DNI: string

@@ -25,8 +25,8 @@ export const fetchEmployeesById = async (id: string): Promise<any> => {
 export const postEmployee = async(employee: EmployeeInterface) => {
     try {
         const query = `
-        INSERT INTO employees (DNI, active, address, bankAccount, birth, contract, email, gender, job, name, password, phone, postalCode, socialSecurity, startDate)
-        VALUES ('${employee.DNI}', '${employee.active}', '${employee.address}', '${employee.bankAccount}', '${employee.birth}', '${employee.contract}', '${employee.email}', '${employee.gender}', '${employee.job}', '${employee.name}', '${employee.password}', '${employee.phone}', '${employee.postalCode}', '${employee.socialSecurity}', '${employee.startDate}')
+        INSERT INTO employees (photo, DNI, active, address, bankAccount, birth, contract, email, gender, job, name, password, phone, postalCode, socialSecurity, startDate)
+        VALUES ('${employee.photo}', '${employee.DNI}', '${employee.active}', '${employee.address}', '${employee.bankAccount}', '${employee.birth}', '${employee.contract}', '${employee.email}', '${employee.gender}', '${employee.job}', '${employee.name}', '${employee.password}', '${employee.phone}', '${employee.postalCode}', '${employee.socialSecurity}', '${employee.startDate}')
         `
 
         const [result, fields] = await executeQuery(query)
