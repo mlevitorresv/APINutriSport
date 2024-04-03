@@ -26,7 +26,7 @@ export const postProduct = async(product: ProductInterface) => {
     try {
         const query = `
         INSERT INTO products (PVP, SKU, brand, carbohydrates, category, description, dimensions, energy, fats, ingredients, instructions, name, photos, proteins, salt, stock, weight)
-        VALUES ('${product.PVP}', '${product.SKU}', '${product.brand}', '${product.carbohydrates}', '${product.category}', '${product.description}', '${product.dimensions}', '${product.energy}', '${product.fats}', '${product.ingredients}', '${product.instructions}', '${product.name}', '${product.photos}', '${product.proteins}', '${product.salt}', '${product.stock}', '${product.weight}')
+        VALUES ('${product.PVP}', '${product.SKU}', '${product.brand}', '${product.carbohydrates}', '${product.category}', '${product.description}', '${product.dimensions}', '${product.energy}', '${product.fats}', '${product.ingredients}', '${product.instructions}', '${product.name}', '${JSON.stringify(product.photos)}', '${product.proteins}', '${product.salt}', '${product.stock}', '${product.weight}')
         `
 
         const [result, fields] = await executeQuery(query)
