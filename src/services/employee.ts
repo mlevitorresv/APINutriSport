@@ -1,5 +1,7 @@
 import { mysqlConnect, executeQuery } from "../config/db";
 import { EmployeeInterface } from "../models/Employee";
+const bcrypt = require('bcrypt')
+const saltRounds = 10;
 
 export const fetchAllEmployees = async (): Promise<any> => {
     try {
@@ -24,9 +26,14 @@ export const fetchEmployeesById = async (id: string): Promise<any> => {
 
 export const postEmployee = async(employee: EmployeeInterface) => {
     try {
+        let hashedPassword = '';
+        await bcrypt.genSalt(employee.password, saltRounds, (err: Error, hash: string) => {
+            hashedPassword = hash;
+        })
+
         const query = `
         INSERT INTO employees (photo, DNI, active, address, bankAccount, birth, contract, email, gender, job, name, password, phone, postalCode, socialSecurity, startDate)
-        VALUES ('${employee.photo}', '${employee.DNI}', '${employee.active}', '${employee.address}', '${employee.bankAccount}', '${employee.birth}', '${employee.contract}', '${employee.email}', '${employee.gender}', '${employee.job}', '${employee.name}', '${employee.password}', '${employee.phone}', '${employee.postalCode}', '${employee.socialSecurity}', '${employee.startDate}')
+        VALUES ('${employee.photo}', '${employee.DNI}', '${employee.active}', '${employee.address}', '${employee.bankAccount}', '${employee.birth}', '${employee.contract}', '${employee.email}', '${employee.gender}', '${employee.job}', '${employee.name}', '${hashedPassword}', '${employee.phone}', '${employee.postalCode}', '${employee.socialSecurity}', '${employee.startDate}')
         `
 
         const [result, fields] = await executeQuery(query)
