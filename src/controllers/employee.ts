@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express'
 import { EmployeeInterface } from '../models/Employee';
-import { deleteEmployee, fetchAllEmployees, fetchEmployeesById, patchEmployee, postEmployee } from '../services/employee';
+import { deleteEmployee, fetchAllEmployees, fetchEmployeesById, putEmployee, postEmployee } from '../services/employee';
 
 
 export const employeeRouter = express.Router();
@@ -39,10 +39,10 @@ employeeRouter.post('/', async (req: Request, res: Response) => {
 })
 
 
-employeeRouter.patch('/:id', async (req: Request, res: Response) => {
+employeeRouter.put('/:id', async (req: Request, res: Response) => {
     try {
         const id = req.params.id;
-        const result = await patchEmployee(id, req.body);
+        const result = await putEmployee(id, req.body);
         res.json(result)
     } catch (error) {
         console.error('Error updating the employee: ', error)

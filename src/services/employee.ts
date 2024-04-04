@@ -1,12 +1,10 @@
-import { mongoConnect, executeQuery } from "../config/db";
-import { EmployeeInterface } from "../models/Employee";
+import { EmployeeInterface, EmployeeModel } from "../models/Employee";
 const bcrypt = require('bcrypt')
 const saltRounds = 10;
 
 export const fetchAllEmployees = async (): Promise<any> => {
     try {
-        const [result, fields] = await executeQuery(`SELECT * FROM employees`)
-        return result;
+        return await EmployeeModel.find();
     } catch (error) {
         console.error('Error, employees were not obtained: ', error)
         throw error;
@@ -15,8 +13,7 @@ export const fetchAllEmployees = async (): Promise<any> => {
 
 export const fetchEmployeesById = async (id: string): Promise<any> => {
     try{
-        const [result, fields] = await executeQuery(`SELECT * FROM employees WHERE id = ${id}`)
-        return result;
+        return await EmployeeModel.findById(id);
     }catch(error){
         console.error('Error, employee were not obtained: ', error)
         throw error;
@@ -29,12 +26,26 @@ export const postEmployee = async(employee: EmployeeInterface) => {
         const salt = await bcrypt.genSalt(saltRounds);
         const hashedPassword = await bcrypt.hash(employee.password, salt)
 
-        const query = `
-        INSERT INTO employees (photo, DNI, active, address, bankAccount, birth, contract, email, gender, job, name, password, phone, postalCode, socialSecurity, startDate)
-        VALUES ('${employee.photo}', '${employee.DNI}', '${employee.active}', '${employee.address}', '${employee.bankAccount}', '${employee.birth}', '${employee.contract}', '${employee.email}', '${employee.gender}', '${employee.job}', '${employee.name}', '${hashedPassword}', '${employee.phone}', '${employee.postalCode}', '${employee.socialSecurity}', '${employee.startDate}')
-        `
+        const data = new EmployeeModel({
+            photo: employee.photo,
+            DNI: employee.DNI,
+            active: employee.active,
+            address: employee.address,
+            bankAccount: employee.bankAccount,
+            birth: employee.birth,
+            contract: employee.contract,
+            email: employee.email,
+            gender: employee.gender,
+            job: employee.job,
+            name: employee.name,
+            password: hashedPassword, // Recuerda que para una aplicación real, deberías guardar la contraseña de forma segura, como un hash
+            phone: employee.phone,
+            postalCode: employee.postalCode,
+            socialSecurity: employee.socialSecurity,
+            startDate: employee.startDate
+        })
 
-        const [result, fields] = await executeQuery(query)
+        await data.save()
         return { success: true, employee: employee }
     } catch (error) {
         console.error('Error, employee not saved: ', error)
@@ -43,21 +54,9 @@ export const postEmployee = async(employee: EmployeeInterface) => {
 }
 
 
-export const patchEmployee = async (id: string, body: EmployeeInterface) => {
+export const putEmployee = async (id: string, body: EmployeeInterface) => {
     try {
-        const updateFields = {...body};
-        const keys = Object.keys(updateFields)
-        const values = Object.values(updateFields)
-        
-        const setClause = keys.map(key => `${key} = ?`).join(', ')
-
-        const query = `UPDATE employees SET ${setClause} WHERE id = ?;`;
-
-        const updateValues = [...values, id];
-
-        executeQuery(query, updateValues)
-        return { success: true, user: body }
-
+        return await EmployeeModel.findByIdAndUpdate(id, body);
     } catch (error) {
         console.error('Error, employee not updated: ', error)
         throw error;
@@ -67,8 +66,7 @@ export const patchEmployee = async (id: string, body: EmployeeInterface) => {
 
 export const deleteEmployee = async (id: string) => {
     try {
-        const [result, fields] = await executeQuery(`DELETE FROM employees WHERE id = ${id}`)
-        return result;
+        return await EmployeeModel.findByIdAndDelete(id);
     } catch (error) {
         console.error('Error, employee not deleted: ', error)
         throw error;
