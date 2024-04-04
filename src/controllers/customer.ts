@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express'
 import { CustomerInterface } from '../models/Customer';
-import { deleteCustomer, fetchAllCustomers, fetchCustomersById, patchCustomer, postCustomer } from '../services/customer';
+import { deleteCustomer, fetchAllCustomers, fetchCustomersById, putCustomer as putCustomer, postCustomer } from '../services/customer';
 
 
 export const customerRouter = express.Router();
@@ -39,10 +39,10 @@ customerRouter.post('/', async (req: Request, res: Response) => {
 })
 
 
-customerRouter.patch('/:id', async (req: Request, res: Response) => {
+customerRouter.put('/:id', async (req: Request, res: Response) => {
     try {
         const id = req.params.id;
-        const result = await patchCustomer(id, req.body);
+        const result = await putCustomer(id, req.body);
         res.json(result)
     } catch (error) {
         console.error('Error updating the customer: ', error)
