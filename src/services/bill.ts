@@ -1,10 +1,8 @@
-import { mongoConnect, executeQuery } from "../config/db";
-import { BillsInterface } from "../models/Bill";
+import { BillModel, BillsInterface } from "../models/Bill";
 
 export const fetchAllBills = async (): Promise<any> => {
     try {
-        const [result, fields] = await executeQuery(`SELECT * FROM bills`)
-        return result;
+        return await BillModel.find();
     } catch (error) {
         console.error('Error, bills were not obtained: ', error)
         throw error;
@@ -13,8 +11,7 @@ export const fetchAllBills = async (): Promise<any> => {
 
 export const fetchBillsById = async (id: string): Promise<any> => {
     try{
-        const [result, fields] = await executeQuery(`SELECT * FROM bills WHERE id = ${id}`)
-        return result;
+        return await BillModel.findById(id);
     }catch(error){
         console.error('Error, bill were not obtained: ', error)
         throw error;
@@ -24,12 +21,14 @@ export const fetchBillsById = async (id: string): Promise<any> => {
 
 export const postBill = async(bill: BillsInterface) => {
     try {
-        const query = `
-        INSERT INTO bills (beneficiary, description, type, paymentAmount, date)
-        VALUES ('${bill.beneficiary}', '${bill.description}', '${bill.type}', '${bill.paymentAmount}', '${bill.date}')
-        `
-
-        const [result, fields] = await executeQuery(query)
+        const data = new BillModel({
+            beneficiary: bill.beneficiary,
+            description: bill.description,
+            type: bill.type,
+            paymentAmount: bill.paymentAmount,
+            date: bill.date
+        })
+        await data.save()
         return { success: true, bill: bill }
     } catch (error) {
         console.error('Error, bill not saved: ', error)
@@ -38,21 +37,9 @@ export const postBill = async(bill: BillsInterface) => {
 }
 
 
-export const patchBill = async (id: string, body: BillsInterface) => {
+export const putBill = async (id: string, body: BillsInterface) => {
     try {
-        const updateFields = {...body};
-        const keys = Object.keys(updateFields)
-        const values = Object.values(updateFields)
-        
-        const setClause = keys.map(key => `${key} = ?`).join(', ')
-
-        const query = `UPDATE bills SET ${setClause} WHERE id = ?;`;
-
-        const updateValues = [...values, id];
-
-        executeQuery(query, updateValues)
-        return { success: true, user: body }
-
+        return await BillModel.findByIdAndUpdate(id, body)
     } catch (error) {
         console.error('Error, bill not updated: ', error)
         throw error;
@@ -62,8 +49,7 @@ export const patchBill = async (id: string, body: BillsInterface) => {
 
 export const deleteBill = async (id: string) => {
     try {
-        const [result, fields] = await executeQuery(`DELETE FROM bills WHERE id = ${id}`)
-        return result;
+        return await BillModel.findByIdAndDelete(id);
     } catch (error) {
         console.error('Error, bill not deleted: ', error)
         throw error;

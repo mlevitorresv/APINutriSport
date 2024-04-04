@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express'
 import { BillsInterface } from '../models/Bill';
-import { deleteBill, fetchAllBills, fetchBillsById, patchBill, postBill } from '../services/bill';
+import { deleteBill, fetchAllBills, fetchBillsById, putBill, postBill } from '../services/bill';
 
 
 export const billRouter = express.Router();
@@ -39,10 +39,10 @@ billRouter.post('/', async (req: Request, res: Response) => {
 })
 
 
-billRouter.patch('/:id', async (req: Request, res: Response) => {
+billRouter.put('/:id', async (req: Request, res: Response) => {
     try {
         const id = req.params.id;
-        const result = await patchBill(id, req.body);
+        const result = await putBill(id, req.body);
         res.json(result)
     } catch (error) {
         console.error('Error updating the bill: ', error)
