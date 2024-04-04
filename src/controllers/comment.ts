@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express'
 import { CommentInterface } from '../models/Comment';
-import { deleteComment, fetchAllComments, fetchCommentsById, patchComment, postComment } from '../services/comment';
+import { deleteComment, fetchAllComments, fetchCommentsById, putComment, postComment } from '../services/comment';
 
 
 export const commentRouter = express.Router();
@@ -39,10 +39,10 @@ commentRouter.post('/', async (req: Request, res: Response) => {
 })
 
 
-commentRouter.patch('/:id', async (req: Request, res: Response) => {
+commentRouter.put('/:id', async (req: Request, res: Response) => {
     try {
         const id = req.params.id;
-        const result = await patchComment(id, req.body);
+        const result = await putComment(id, req.body);
         res.json(result)
     } catch (error) {
         console.error('Error updating the comment: ', error)
