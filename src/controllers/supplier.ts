@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express'
 import { SupplierInterface } from '../models/Supplier';
-import { deleteSupplier, fetchAllSuppliers, fetchSuppliersById, patchSupplier, postSupplier } from '../services/supplier';
+import { deleteSupplier, fetchAllSuppliers, fetchSuppliersById, putSupplier, postSupplier } from '../services/supplier';
 
 
 export const supplierRouter = express.Router();
@@ -39,10 +39,10 @@ supplierRouter.post('/', async (req: Request, res: Response) => {
 })
 
 
-supplierRouter.patch('/:id', async (req: Request, res: Response) => {
+supplierRouter.put('/:id', async (req: Request, res: Response) => {
     try {
         const id = req.params.id;
-        const result = await patchSupplier(id, req.body);
+        const result = await putSupplier(id, req.body);
         res.json(result)
     } catch (error) {
         console.error('Error updating the supplier: ', error)
