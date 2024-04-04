@@ -26,10 +26,8 @@ export const fetchEmployeesById = async (id: string): Promise<any> => {
 
 export const postEmployee = async(employee: EmployeeInterface) => {
     try {
-        let hashedPassword = '';
-        await bcrypt.genSalt(employee.password, saltRounds, (err: Error, hash: string) => {
-            hashedPassword = hash;
-        })
+        const salt = await bcrypt.genSalt(saltRounds);
+        const hashedPassword = await bcrypt.hash(employee.password, salt)
 
         const query = `
         INSERT INTO employees (photo, DNI, active, address, bankAccount, birth, contract, email, gender, job, name, password, phone, postalCode, socialSecurity, startDate)
