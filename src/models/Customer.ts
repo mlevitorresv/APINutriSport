@@ -1,5 +1,5 @@
-import Joi from 'joi'
 import { GenderType } from '../util/dataTypes'
+import { Schema, model } from 'mongoose'
 
 export interface CustomerInterface{
     name: string,
@@ -10,12 +10,14 @@ export interface CustomerInterface{
     gender : string
 }
 
-export const commentSchema = Joi.object({
-    id: Joi.number().integer().positive().required(),
-    name: Joi.string().required(),
-    email: Joi.string().required(),
-    phone: Joi.string().required(),
-    postalCode: Joi.number().min(5).max(5).required(),
-    birth: Joi.date().required(),
-    gender: Joi.string().valid(...Object.values(GenderType)).required(),
+export const customerSchema = new Schema({
+    name: {type: String, required: true},
+    email: {type: String, required: true},
+    phone: {type: String, required: true},
+    postalCode: {type: Number, min: 5, max:5 ,required: true},
+    birth: {type: Date, required: true},
+    gender: {type: String, enum: GenderType,required: true},
 })
+
+
+export const CustomerModel = model<CustomerInterface>('Customer', customerSchema)

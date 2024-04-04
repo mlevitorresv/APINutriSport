@@ -1,4 +1,4 @@
-import Joi from "joi"
+import { Schema, model } from "mongoose"
 
 export interface CommentInterface {
     name: string
@@ -7,10 +7,11 @@ export interface CommentInterface {
     date: Date
 }
 
-export const commentSchema = Joi.object({
-    id: Joi.number().integer().positive().required(),
-    name: Joi.string().required(),
-    email: Joi.string().required(),
-    comment: Joi.string().required(),
-    date: Joi.date().required(),
+export const commentSchema = new Schema({
+    name: {type: String, required: true},
+    email: {type: String, required: true},
+    comment: {type: String, required: true},
+    date: {type: Date, required: true},
 })
+
+export const CommentModel = model<CommentInterface>('Comment', commentSchema)

@@ -1,4 +1,5 @@
-import Joi from 'joi'
+import { Schema, model } from "mongoose"
+import { BillType } from "../util/dataTypes"
 
 export interface BillsInterface{
     beneficiary: string
@@ -8,17 +9,13 @@ export interface BillsInterface{
     date: Date
 }
 
-enum BillType{
-    Compra = "compra",
-    Alquiler = "alquiler",
-    Nómina = "nómina"
-}
-
-export const billsSchema = Joi.object({
-    id: Joi.number().integer().positive().required(),
-    beneficiary: Joi.string().required(),
-    description: Joi.string().required(),
-    type: Joi.string().valid(...Object.values(BillType)).required(),
-    paymentAmount: Joi.number().required(),
-    date: Joi.date().required(),
+const billsSchema = new Schema({
+    beneficiary: {type: String, required: true},
+    description: {type: String, required: true},
+    type: {type: String, enum: BillType, required: true},
+    paymentAmount: {type: Number, required: true},
+    date: {type: Date, required: true},
 })
+
+
+export const BillModel = model<BillsInterface>('Bill', billsSchema)

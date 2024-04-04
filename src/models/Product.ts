@@ -1,5 +1,5 @@
-import Joi from "joi";
 import { ProductTypes } from "../util/dataTypes";
+import { Schema, model } from "mongoose";
 
 export interface ProductInterface{
     name: string
@@ -21,23 +21,38 @@ export interface ProductInterface{
     instructions: string
 }
 
-export const productSchema = Joi.object({
-    id: Joi.number().integer().positive().required(),
-    name: Joi.string().required(),
-    description: Joi.string().required(),
-    SKU: Joi.string().required(),
-    brand: Joi.string().required(),
-    category: Joi.string().valid(...Object.values(ProductTypes)).required(),
-    PVP: Joi.number().required(),
-    stock: Joi.number().required(),
-    photos: Joi.array().items(Joi.string()).length(3).required(),
-    ingredients: Joi.string().required(),
-    energy: Joi.number().required(),
-    fats: Joi.number().required(),
-    carbohydrates: Joi.number().required(),
-    proteins: Joi.number().required(),
-    salt: Joi.number().required(),
-    weight: Joi.number().required(),
-    dimensions: Joi.string().required(),
-    instructions: Joi.string().required(),
+export const productSchema = new Schema({
+    name: {type: String, required: true},
+    description: {type: String, required: true},
+    SKU: {type: String, required: true},
+    brand: {type: String, required: true},
+    category: {type: String, enum:ProductTypes, required: true},
+    PVP: {type: Number, required: true},
+    stock: {type: Number, required: true},
+    photos: {
+        type: [
+            {
+                type: String,
+                required: true
+            }
+        ],
+        validate: {
+            validator: function(v: String[]) {
+                return v.length === 3;
+            },
+            message: 'La longitud de `photos` debe ser de exactamente 3 elementos.'
+        }
+    },
+    ingredients: {type: String, required: true},
+    energy: {type: Number, required: true},
+    fats: {type: Number, required: true},
+    carbohydrates: {type: Number, required: true},
+    proteins: {type: Number, required: true},
+    salt: {type: Number, required: true},
+    weight: {type: Number, required: true},
+    dimensions: {type: String, required: true},
+    instructions: {type: String, required: true},
 })
+
+
+export const ProductModel = model<ProductInterface>('Product', productSchema)

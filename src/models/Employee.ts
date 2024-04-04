@@ -1,5 +1,5 @@
-import Joi from 'joi'
 import { ContractTypes, GenderType } from '../util/dataTypes'
+import { Schema, model } from 'mongoose'
 
 export interface EmployeeInterface{
     name: string
@@ -20,21 +20,22 @@ export interface EmployeeInterface{
     bankAccount: string
 }
 
-export const employeeSchema = Joi.object({
-    id: Joi.number().integer().positive().required(),
-    name: Joi.string().required(),
-    birth: Joi.date().required(),
-    gender: Joi.string().valid(...Object.values(GenderType)).required(),
-    DNI: Joi.string().min(9).max(12).required(),
-    email: Joi.string().required(),
-    password: Joi.string().min(9).required(),
-    phone: Joi.string().required(),
-    postalCode: Joi.number().min(5).max(5).required(),
-    address: Joi.string().required(),
-    job: Joi.string().required(),
-    startDate: Joi.date().required(),
-    contract: Joi.string().valid(...Object.values(ContractTypes)).required(),
-    active: Joi.boolean().required(),
-    socialSecurity: Joi.number().min(12).max(12).required(),
-    bankAccount: Joi.string().required(),
+export const employeeSchema = new Schema({
+    name: {type: String, required: true},
+    birth: {type: Date, required: true},
+    gender: {type: String, enum:GenderType, required: true},
+    DNI: {type: String, min: 9, max:12 ,required: true},
+    email: {type: String, required: true},
+    password: {type: String, min: 9, required: true},
+    phone: {type: String, required: true},
+    postalCode: {type: String,min: 5, max:5 , required: true},
+    address: {type: String, required: true},
+    job: {type: String, required: true},
+    startDate: {type: Date, required: true},
+    contract: {type: String, enum:ContractTypes, required: true},
+    active: {type: Boolean, required: true},
+    socialSecurity: {type: String, min: 12, max:12 ,required: true},
+    bankAccount: {type: String, required: true},
 })
+
+export const EmployeeModel = model('Employee', employeeSchema)

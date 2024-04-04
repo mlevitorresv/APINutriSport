@@ -28,3 +28,9 @@ export enum CategoriesSuppliersTypes {
     Products = "products",
     Rent = "rent"
 }
+
+export enum BillType{
+    Compra = "compra",
+    Alquiler = "alquiler",
+    Nómina = "nómina"
+}
