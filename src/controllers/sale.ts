@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express'
 import { SaleInterface } from '../models/Sale';
-import { deleteSale, fetchAllSales, fetchSalesById, patchSale, postSale } from '../services/sale';
+import { deleteSale, fetchAllSales, fetchSalesById, putSale, postSale } from '../services/sale';
 
 
 export const saleRouter = express.Router();
@@ -39,10 +39,10 @@ saleRouter.post('/', async (req: Request, res: Response) => {
 })
 
 
-saleRouter.patch('/:id', async (req: Request, res: Response) => {
+saleRouter.put('/:id', async (req: Request, res: Response) => {
     try {
         const id = req.params.id;
-        const result = await patchSale(id, req.body);
+        const result = await putSale(id, req.body);
         res.json(result)
     } catch (error) {
         console.error('Error updating the sale: ', error)

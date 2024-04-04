@@ -1,10 +1,8 @@
-import { mongoConnect, executeQuery } from "../config/db";
-import { SaleInterface } from "../models/Sale";
+import { SaleInterface, SaleModel } from "../models/Sale";
 
 export const fetchAllSales = async (): Promise<any> => {
     try {
-        const [result, fields] = await executeQuery(`SELECT * FROM sales`)
-        return result;
+        return await SaleModel.find()
     } catch (error) {
         console.error('Error, sales were not obtained: ', error)
         throw error;
@@ -13,8 +11,7 @@ export const fetchAllSales = async (): Promise<any> => {
 
 export const fetchSalesById = async (id: string): Promise<any> => {
     try{
-        const [result, fields] = await executeQuery(`SELECT * FROM sales WHERE id = ${id}`)
-        return result;
+        return await SaleModel.findById(id)
     }catch(error){
         console.error('Error, sale were not obtained: ', error)
         throw error;
@@ -24,12 +21,14 @@ export const fetchSalesById = async (id: string): Promise<any> => {
 
 export const postSale = async(sale: SaleInterface) => {
     try {
-        const query = `
-        INSERT INTO sales (customer_id, date, employee_id, invoiceNumber, payMethod)
-        VALUES ('${sale.customer}', '${sale.date}', '${sale.employee}', '${sale.invoiceNumber}', '${sale.payMethod}')
-        `
-
-        const [result, fields] = await executeQuery(query)
+        const data = new SaleModel({
+            customer: sale.customer,
+            employee: sale.employee,
+            date: sale.date,
+            invoiceNumber: sale.invoiceNumber,
+            payMethod: sale.payMethod
+        })
+        await data.save()
         return { success: true, sale: sale }
     } catch (error) {
         console.error('Error, sale not saved: ', error)
@@ -38,20 +37,9 @@ export const postSale = async(sale: SaleInterface) => {
 }
 
 
-export const patchSale = async (id: string, body: SaleInterface) => {
+export const putSale = async (id: string, body: SaleInterface) => {
     try {
-        const updateFields = {...body};
-        const keys = Object.keys(updateFields)
-        const values = Object.values(updateFields)
-        
-        const setClause = keys.map(key => `${key} = ?`).join(', ')
-
-        const query = `UPDATE sales SET ${setClause} WHERE id = ?;`;
-
-        const updateValues = [...values, id];
-
-        executeQuery(query, updateValues)
-        return { success: true, user: body }
+        return await SaleModel.findByIdAndUpdate(id, body)
 
     } catch (error) {
         console.error('Error, sale not updated: ', error)
@@ -62,8 +50,7 @@ export const patchSale = async (id: string, body: SaleInterface) => {
 
 export const deleteSale = async (id: string) => {
     try {
-        const [result, fields] = await executeQuery(`DELETE FROM sales WHERE id = ${id}`)
-        return result;
+        return await SaleModel.findByIdAndDelete(id)
     } catch (error) {
         console.error('Error, sale not deleted: ', error)
         throw error;
