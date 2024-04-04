@@ -1,4 +1,4 @@
-import { mysqlConnect, executeQuery } from "../config/db";
+import { mongoConnect, executeQuery } from "../config/db";
 import { CommentInterface } from "../models/Comment";
 
 export const fetchAllComments = async (): Promise<any> => {

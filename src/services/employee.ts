@@ -1,4 +1,4 @@
-import { mysqlConnect, executeQuery } from "../config/db";
+import { mongoConnect, executeQuery } from "../config/db";
 import { EmployeeInterface } from "../models/Employee";
 const bcrypt = require('bcrypt')
 const saltRounds = 10;

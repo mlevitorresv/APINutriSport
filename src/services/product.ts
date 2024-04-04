@@ -1,4 +1,4 @@
-import { mysqlConnect, executeQuery } from "../config/db";
+import { mongoConnect, executeQuery } from "../config/db";
 import { ProductInterface } from "../models/Product";
 
 export const fetchAllProducts = async (): Promise<any> => {

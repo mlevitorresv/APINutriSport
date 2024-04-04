@@ -1,41 +1,21 @@
-import mysql, { Pool, PoolOptions } from "mysql2/promise";
 import dotenv from "dotenv";
+import mongoose from "mongoose";
 dotenv.config();
 
-const db_host = process.env.DB_HOST;
 const db_user = process.env.DB_USER;
 const db_password = process.env.DB_PASSWORD
-const db_database = process.env.DB_DATABASE
-const db_port = process.env.DB_PORT;
+const db_collection = process.env.DB_COLLECTION
+const db_cluster = process.env.DB_CLUSTER
+const db_name = process.env.DB_NAME
 
 
-const pool: Pool = mysql.createPool({
-    host: db_host,
-    user: db_user,
-    password: db_password,
-    database: db_database,
-    port: 3306
-})
-
-export const mysqlConnect = async ()=> {
+export const mongoConnect = async ()=> {
 
     try {
-        const connection = await pool.getConnection();
+        await mongoose.connect(`mongodb+srv://${db_user}:${db_password}@${db_collection}.${db_cluster}.mongodb.net/${db_name}`)
         console.log('Success Connection')
-        return connection;
     } catch (e) {
         console.log('DB error:', e)
         throw e
     }
 }
-
-
-export const executeQuery = async (query: string, params?: any[]) => {
-    const connection = await mysqlConnect();
-    try {
-        return await connection.execute(query, params)
-    } finally {
-        connection.end();
-    }
-}
-

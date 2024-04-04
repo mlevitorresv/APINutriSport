@@ -1,7 +1,7 @@
 import express from 'express'
 import { authMiddleware } from './middleware/auth'
 import { loginRouter } from './controllers/login'
-import { mysqlConnect } from './config/db'
+import { mongoConnect } from './config/db'
 import { billRouter } from './controllers/bill'
 import { commentRouter } from './controllers/comment'
 import { customerRouter } from './controllers/customer'
@@ -15,7 +15,7 @@ import { publicRouter } from './public/public'
 export const app = express()
 
 
-mysqlConnect();
+mongoConnect();
 app.use(express.json())
 
 app.use('/login', loginRouter)
