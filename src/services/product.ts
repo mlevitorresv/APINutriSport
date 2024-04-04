@@ -1,10 +1,8 @@
-import { mongoConnect, executeQuery } from "../config/db";
-import { ProductInterface } from "../models/Product";
+import { ProductInterface, ProductModel } from "../models/Product";
 
 export const fetchAllProducts = async (): Promise<any> => {
     try {
-        const [result, fields] = await executeQuery(`SELECT * FROM products`)
-        return result;
+        return await ProductModel.find();
     } catch (error) {
         console.error('Error, products were not obtained: ', error)
         throw error;
@@ -13,8 +11,7 @@ export const fetchAllProducts = async (): Promise<any> => {
 
 export const fetchProductsById = async (id: string): Promise<any> => {
     try{
-        const [result, fields] = await executeQuery(`SELECT * FROM products WHERE id = ${id}`)
-        return result;
+        return await ProductModel.findById(id);
     }catch(error){
         console.error('Error, product were not obtained: ', error)
         throw error;
@@ -24,12 +21,26 @@ export const fetchProductsById = async (id: string): Promise<any> => {
 
 export const postProduct = async(product: ProductInterface) => {
     try {
-        const query = `
-        INSERT INTO products (PVP, SKU, brand, carbohydrates, category, description, dimensions, energy, fats, ingredients, instructions, name, photos, proteins, salt, stock, weight)
-        VALUES ('${product.PVP}', '${product.SKU}', '${product.brand}', '${product.carbohydrates}', '${product.category}', '${product.description}', '${product.dimensions}', '${product.energy}', '${product.fats}', '${product.ingredients}', '${product.instructions}', '${product.name}', '${JSON.stringify(product.photos)}', '${product.proteins}', '${product.salt}', '${product.stock}', '${product.weight}')
-        `
-
-        const [result, fields] = await executeQuery(query)
+        const data = new ProductModel({
+            name: product.name,
+            description: product.description,
+            SKU: product.SKU,
+            brand: product.brand,
+            category: product.category,
+            PVP: product.PVP,
+            stock: product.stock,
+            photos: product.photos,
+            ingredients: product.ingredients,
+            energy: product.energy,
+            fats: product.fats,
+            carbohydrates: product.carbohydrates,
+            proteins: product.proteins,
+            salt: product.salt,
+            weight: product.weight,
+            dimensions: product.dimensions,
+            instructions: product.instructions,
+        })
+        await data.save()
         return { success: true, product: product }
     } catch (error) {
         console.error('Error, product not saved: ', error)
@@ -38,20 +49,9 @@ export const postProduct = async(product: ProductInterface) => {
 }
 
 
-export const patchProduct = async (id: string, body: ProductInterface) => {
+export const putProduct = async (id: string, body: ProductInterface) => {
     try {
-        const updateFields = {...body};
-        const keys = Object.keys(updateFields)
-        const values = Object.values(updateFields)
-        
-        const setClause = keys.map(key => `${key} = ?`).join(', ')
-
-        const query = `UPDATE products SET ${setClause} WHERE id = ?;`;
-
-        const updateValues = [...values, id];
-
-        executeQuery(query, updateValues)
-        return { success: true, user: body }
+        return await ProductModel.findByIdAndUpdate(id, body);
 
     } catch (error) {
         console.error('Error, product not updated: ', error)
@@ -62,8 +62,7 @@ export const patchProduct = async (id: string, body: ProductInterface) => {
 
 export const deleteProduct = async (id: string) => {
     try {
-        const [result, fields] = await executeQuery(`DELETE FROM products WHERE id = ${id}`)
-        return result;
+        return await ProductModel.findByIdAndDelete(id);
     } catch (error) {
         console.error('Error, product not deleted: ', error)
         throw error;

@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express'
 import { ProductInterface } from '../models/Product';
-import { deleteProduct, fetchAllProducts, fetchProductsById, patchProduct, postProduct } from '../services/product';
+import { deleteProduct, fetchAllProducts, fetchProductsById, putProduct, postProduct } from '../services/product';
 
 
 export const productRouter = express.Router();
@@ -39,10 +39,10 @@ productRouter.post('/', async (req: Request, res: Response) => {
 })
 
 
-productRouter.patch('/:id', async (req: Request, res: Response) => {
+productRouter.put('/:id', async (req: Request, res: Response) => {
     try {
         const id = req.params.id;
-        const result = await patchProduct(id, req.body);
+        const result = await putProduct(id, req.body);
         res.json(result)
     } catch (error) {
         console.error('Error updating the product: ', error)
