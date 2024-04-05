@@ -174,7 +174,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/NutriSport-backend/dev/1712305017137-2024-04-05T08:16:57.137Z/NutriSport-backend.zip"
+                "S3Key": "serverless/NutriSport-backend/dev/1712322862008-2024-04-05T13:14:22.008Z/NutriSport-backend.zip"
               },
               "Handler": "dist/lambda.handler",
               "Runtime": "nodejs18.x",
@@ -192,14 +192,14 @@
               "AppLogGroup"
             ]
           },
-          "AppLambdaVersion8ffWRVQ4HvNdjLg2xI0fAdWcp4yEtVfX17hKX6ZWeY": {
+          "AppLambdaVersionHjt5G3hzXuswXZT4nzX1dZCMA5eoZXYJuFdDvKYPk": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "AppLambdaFunction"
               },
-              "CodeSha256": "5gX1W+PAuIfMC2wDTvqF15So0P5RHYp9d8MTNDb6ohE="
+              "CodeSha256": "6G7cnPcvg8EqAq4J+DGNMNlUnVlAX5qMAE2PD+NSKAQ="
             }
           },
           "ApiGatewayRestApi": {
@@ -417,7 +417,7 @@
               "AppLambdaPermissionApiGateway"
             ]
           },
-          "ApiGatewayDeployment1712305005872": {
+          "ApiGatewayDeployment1712322846167": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -482,7 +482,7 @@
           "AppLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "AppLambdaVersion8ffWRVQ4HvNdjLg2xI0fAdWcp4yEtVfX17hKX6ZWeY"
+              "Ref": "AppLambdaVersionHjt5G3hzXuswXZT4nzX1dZCMA5eoZXYJuFdDvKYPk"
             },
             "Export": {
               "Name": "sls-NutriSport-backend-dev-AppLambdaFunctionQualifiedArn"
@@ -661,7 +661,7 @@
         "timeout": 6,
         "runtime": "nodejs18.x",
         "vpc": {},
-        "versionLogicalId": "AppLambdaVersion8ffWRVQ4HvNdjLg2xI0fAdWcp4yEtVfX17hKX6ZWeY"
+        "versionLogicalId": "AppLambdaVersionHjt5G3hzXuswXZT4nzX1dZCMA5eoZXYJuFdDvKYPk"
       }
     },
     "configValidationMode": "warn",
@@ -681,7 +681,7 @@
         ],
         "artifactsS3KeyDirname": "serverless/NutriSport-backend/dev/code-artifacts",
         "artifact": "E:\\DESARROLLO\\PROYECTOS_PERSONALES\\APINutriSport\\.serverless\\NutriSport-backend.zip",
-        "artifactDirectoryName": "serverless/NutriSport-backend/dev/1712305017137-2024-04-05T08:16:57.137Z"
+        "artifactDirectoryName": "serverless/NutriSport-backend/dev/1712322862008-2024-04-05T13:14:22.008Z"
       },
       "provider": {
         "$ref": "$[\"service\"][\"provider\"]"
@@ -695,7 +695,7 @@
     "artifact": "E:\\DESARROLLO\\PROYECTOS_PERSONALES\\APINutriSport\\.serverless\\NutriSport-backend.zip"
   },
   "package": {
-    "artifactDirectoryName": "serverless/NutriSport-backend/dev/1712305017137-2024-04-05T08:16:57.137Z",
+    "artifactDirectoryName": "serverless/NutriSport-backend/dev/1712322862008-2024-04-05T13:14:22.008Z",
     "artifact": "NutriSport-backend.zip"
   }
 }

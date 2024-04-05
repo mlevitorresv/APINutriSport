@@ -1,5 +1,5 @@
 import { EmployeeInterface, EmployeeModel } from "../models/Employee";
-const bcrypt = require('bcrypt')
+const bcryptjs = require('bcryptjs')
 const saltRounds = 10;
 
 export const fetchAllEmployees = async (): Promise<any> => {
@@ -23,8 +23,8 @@ export const fetchEmployeesById = async (id: string): Promise<any> => {
 
 export const postEmployee = async(employee: EmployeeInterface) => {
     try {
-        const salt = await bcrypt.genSalt(saltRounds);
-        const hashedPassword = await bcrypt.hash(employee.password, salt)
+        const salt = await bcryptjs.genSalt(saltRounds);
+        const hashedPassword = await bcryptjs.hash(employee.password, salt)
 
         const data = new EmployeeModel({
             photo: employee.photo,

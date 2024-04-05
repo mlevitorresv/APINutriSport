@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 import { generateToken } from "../services/login";
-const bcrypt = require('bcrypt')
+const bcryptjs = require('bcryptjs')
 
 import dotenv from "dotenv";
 import { EmployeeInterface, EmployeeModel } from "../models/Employee";
@@ -16,7 +16,7 @@ loginRouter.post('/', async (req: Request, res: Response) => {
     if(!data)
         return res.status(401).json({ error: "Unauthorized: Invalid credentials" })
     
-    await bcrypt.compare(password, data.password, (err: Error, result: boolean) => {
+    await bcryptjs.compare(password, data.password, (err: Error, result: boolean) => {
         if(err)
             return err;
         if(!result)

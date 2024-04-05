@@ -11,7 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteEmployee = exports.putEmployee = exports.postEmployee = exports.fetchEmployeesById = exports.fetchAllEmployees = void 0;
 const Employee_1 = require("../models/Employee");
-const bcrypt = require('bcrypt');
+const bcryptjs = require('bcryptjs');
 const saltRounds = 10;
 const fetchAllEmployees = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -35,8 +35,8 @@ const fetchEmployeesById = (id) => __awaiter(void 0, void 0, void 0, function* (
 exports.fetchEmployeesById = fetchEmployeesById;
 const postEmployee = (employee) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const salt = yield bcrypt.genSalt(saltRounds);
-        const hashedPassword = yield bcrypt.hash(employee.password, salt);
+        const salt = yield bcryptjs.genSalt(saltRounds);
+        const hashedPassword = yield bcryptjs.hash(employee.password, salt);
         const data = new Employee_1.EmployeeModel({
             photo: employee.photo,
             DNI: employee.DNI,

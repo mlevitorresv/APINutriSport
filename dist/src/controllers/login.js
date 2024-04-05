@@ -15,7 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.loginRouter = void 0;
 const express_1 = __importDefault(require("express"));
 const login_1 = require("../services/login");
-const bcrypt = require('bcrypt');
+const bcryptjs = require('bcryptjs');
 const dotenv_1 = __importDefault(require("dotenv"));
 const Employee_1 = require("../models/Employee");
 dotenv_1.default.config();
@@ -25,7 +25,7 @@ exports.loginRouter.post('/', (req, res) => __awaiter(void 0, void 0, void 0, fu
     const data = yield Employee_1.EmployeeModel.findOne({ email: email });
     if (!data)
         return res.status(401).json({ error: "Unauthorized: Invalid credentials" });
-    yield bcrypt.compare(password, data.password, (err, result) => {
+    yield bcryptjs.compare(password, data.password, (err, result) => {
         if (err)
             return err;
         if (!result)
