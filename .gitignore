@@ -67,3 +67,4 @@ package-lock.json
 /lib/
 .serverless
 dist
+jest.config.ts
