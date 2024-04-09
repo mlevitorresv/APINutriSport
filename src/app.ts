@@ -1,4 +1,5 @@
 import express from 'express'
+import cors from 'cors'
 import { authMiddleware } from './middleware/auth'
 import { loginRouter } from './controllers/login'
 import { mongoConnect } from './config/db'
@@ -13,9 +14,15 @@ import { publicRouter } from './public/public'
 
 
 export const app = express()
-
+const corsOptions = {
+    "origin": "*",
+    "credentials" : true,
+    "methods": "GET,PUT,PATCH,POST,DELETE",
+    "allowedHeaders": "Content-Type,Authorization",
+}
 
 mongoConnect();
+app.use(cors(corsOptions))
 app.use(express.json())
 
 app.use('/login', loginRouter)
